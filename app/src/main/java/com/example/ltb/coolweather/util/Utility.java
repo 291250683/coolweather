@@ -6,7 +6,10 @@ import com.example.ltb.coolweather.R;
 import com.example.ltb.coolweather.db.City;
 import com.example.ltb.coolweather.db.County;
 import com.example.ltb.coolweather.db.Province;
+import com.example.ltb.coolweather.gson.Weather;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,4 +78,18 @@ public class Utility {
 
         return false;
     }
+
+    //将返回的JSON数据解析成Wweather实体类
+    public static Weather handleWeatherRespose(String response){
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather");
+            String weatherContent=jsonArray.getJSONObject(0).toString();
+            return  new Gson().fromJson(weatherContent,Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+         return  null;
+    }
+
 }
